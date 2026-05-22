@@ -1,0 +1,558 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no"
+    />
+    <title>童年的碎片 · 场景2 · 5档独立配色温度计</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background: #e8e0d4;
+        font-family:
+          system-ui,
+          -apple-system,
+          "Segoe UI",
+          "PingFang SC",
+          Roboto,
+          sans-serif;
+        padding: 40px 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        min-height: 100vh;
+      }
+
+      /* 页面内容容器 */
+      .page-content {
+        max-width: 380px;
+        width: 100%;
+        background: #fffbf5;
+        border-radius: 44px;
+        padding: 16px 16px 24px;
+        box-shadow:
+          0 25px 35px -12px rgba(165, 110, 58, 0.12),
+          0 0 0 6px #f0e8dc,
+          0 0 0 10px #d6c9b5;
+      }
+
+      /* ========= 温度计组件（5段独立配色） ========= */
+      .temp-container {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 14px;
+        margin: 0 0 20px 0;
+        padding: 0;
+      }
+      .temp-icon {
+        font-size: 34px;
+        flex-shrink: 0;
+        background: #fff0e0;
+        width: 52px;
+        height: 52px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 52px;
+        transition: all 0.2s ease;
+      }
+      .temp-right {
+        flex: 1;
+      }
+      .bar-wrapper {
+        margin-bottom: 8px;
+      }
+      .bar-segments {
+        display: flex;
+        gap: 4px;
+        width: 100%;
+      }
+      .segment {
+        flex: 1;
+        height: 8px;
+        border-radius: 20px;
+        transition: background 0.2s ease;
+      }
+      .segment-color-1 {
+        background: #8f9ca8;
+      }
+      .segment-color-2 {
+        background: #9cb0a0;
+      }
+      .segment-color-3 {
+        background: #e8b06e;
+      }
+      .segment-color-4 {
+        background: #d48c6b;
+      }
+      .segment-color-5 {
+        background: #c46a4a;
+      }
+      .segment-inactive {
+        background: #e8ddd0;
+      }
+
+      .temp-desc-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        font-size: 12px;
+        line-height: 1.4;
+      }
+      .temp-state-name {
+        font-weight: 700;
+        color: #9b6a3a;
+      }
+      .temp-feeling {
+        color: #c99e6e;
+      }
+
+      /* ========= 碎片卡片 ========= */
+      .fragment-card {
+        background: #ffffff;
+        border-radius: 32px;
+        margin-bottom: 20px;
+        overflow: hidden;
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.04);
+        border: 1px solid #f0d0a8;
+      }
+      .letter-header {
+        background: #fff8f0;
+        padding: 16px 18px 10px;
+      }
+      .fragment-title {
+        font-size: 20px;
+        font-weight: 600;
+        color: #a56e3a;
+        font-family: Georgia, serif;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .letter-body {
+        padding: 16px;
+        background: #ffffff;
+      }
+      .fragment-content {
+        font-size: 15px;
+        line-height: 1.65;
+        color: #6e543a;
+        font-family: Georgia, serif;
+        font-style: italic;
+        text-decoration: underline;
+        text-decoration-color: #f0cda0;
+        text-underline-offset: 6px;
+        background: #fffdf9;
+        padding: 14px 16px;
+        border-radius: 24px;
+        margin-bottom: 20px;
+      }
+
+      /* 选项按钮 */
+      .options-area {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .option-btn {
+        background: #fff2e4;
+        border: none;
+        border-radius: 60px;
+        padding: 12px 18px;
+        font-size: 14px;
+        font-weight: 500;
+        color: #a56e3a;
+        cursor: pointer;
+        transition: 0.1s;
+        text-align: left;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      }
+      .option-btn:active {
+        background: #fce6d0;
+        transform: scale(0.98);
+      }
+
+      /* 轻弹窗反馈 */
+      .toast-feedback {
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%) translateY(20px);
+        padding: 10px 20px;
+        border-radius: 60px;
+        font-size: 13px;
+        font-weight: 500;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        z-index: 1000;
+        opacity: 0;
+        transition:
+          opacity 0.2s,
+          transform 0.2s;
+        pointer-events: none;
+        text-align: center;
+        max-width: 280px;
+        line-height: 1.4;
+        color: #ffffff;
+      }
+      .toast-feedback.warm {
+        background: #e8b06e;
+        color: #5e3e28;
+      }
+      .toast-feedback.cool {
+        background: #9cb0a0;
+        color: #3a4a3a;
+      }
+      .toast-feedback.neutral {
+        background: #f0e0ce;
+        color: #8b6946;
+      }
+      .toast-feedback.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+
+      .subtle-hint {
+        text-align: center;
+        font-size: 11px;
+        color: #d1ae86;
+        margin-top: 16px;
+        padding-top: 8px;
+        border-top: 0.5px dashed #f0e0cc;
+      }
+
+      /* 5档预览区域 */
+      .preview-section {
+        max-width: 380px;
+        width: 100%;
+        background: #fffbf5;
+        border-radius: 32px;
+        padding: 20px;
+        border: 1px solid #f0d0a8;
+        margin-top: 20px;
+      }
+      .preview-title {
+        text-align: center;
+        font-size: 14px;
+        font-weight: 600;
+        color: #a56e3a;
+        margin-bottom: 16px;
+      }
+      .preview-item {
+        margin-bottom: 16px;
+      }
+      .preview-label {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 6px;
+      }
+      .preview-icon {
+        font-size: 24px;
+        width: 40px;
+        text-align: center;
+      }
+      .preview-name {
+        font-size: 13px;
+        font-weight: 500;
+        color: #6e543a;
+        width: 50px;
+      }
+      .preview-bar {
+        flex: 1;
+        display: flex;
+        gap: 4px;
+      }
+      .preview-segment {
+        flex: 1;
+        height: 8px;
+        border-radius: 20px;
+        background: #e8ddd0;
+      }
+      .color-1 {
+        background: #8f9ca8;
+      }
+      .color-2 {
+        background: #9cb0a0;
+      }
+      .color-3 {
+        background: #e8b06e;
+      }
+      .color-4 {
+        background: #d48c6b;
+      }
+      .color-5 {
+        background: #c46a4a;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-content">
+      <!-- 温度计组件（初始常温，第3档） -->
+      <div class="temp-container">
+        <div class="temp-icon" id="tempIcon">🌱</div>
+        <div class="temp-right">
+          <div class="bar-wrapper">
+            <div class="bar-segments" id="tempSegments">
+              <div class="segment segment-color-1"></div>
+              <div class="segment segment-color-2"></div>
+              <div class="segment segment-color-3"></div>
+              <div class="segment segment-inactive"></div>
+              <div class="segment segment-inactive"></div>
+            </div>
+          </div>
+          <div class="temp-desc-row">
+            <span class="temp-state-name" id="stateName">常温</span>
+            <span class="temp-feeling" id="stateFeeling"
+              >今天还好 · 心里软软的</span
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- 碎片卡片 1 -->
+      <div class="fragment-card">
+        <div class="letter-header">
+          <div class="fragment-title"><span>📜</span> 外婆的手</div>
+        </div>
+        <div class="letter-body">
+          <div class="fragment-content">
+            外婆的手很粗。<br />指节大大的。<br />她牵我的时候，会轻轻捏一下。<br />没有原因。<br />就是捏着。
+          </div>
+          <div class="options-area" id="optionsArea1">
+            <div
+              class="option-btn"
+              data-delta="+1"
+              data-feedback="长大了以后，再也没有人那样捏我的手。"
+            >
+              ✧ 我记得那种触感
+            </div>
+            <div
+              class="option-btn"
+              data-delta="+1"
+              data-feedback="有些事，身体比大脑记得更清楚。"
+            >
+              ✧ 不记得了，但觉得安心
+            </div>
+            <div
+              class="option-btn"
+              data-delta="-1"
+              data-feedback="可能不是手冷。是我后来编出来的。"
+            >
+              ✧ 我只记得她的手很冷
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 碎片卡片 2 -->
+      <div class="fragment-card">
+        <div class="letter-header">
+          <div class="fragment-title"><span>🍂</span> 妈妈出门</div>
+        </div>
+        <div class="letter-body">
+          <div class="fragment-content">
+            她穿外套。<br />拿包。<br />钥匙响。<br />我开始哭。<br />她说"一下下就回来"。
+          </div>
+          <div class="options-area" id="optionsArea2">
+            <div
+              class="option-btn"
+              data-delta="-1"
+              data-feedback="那扇门关上的声音，很久以后还会梦到。"
+            >
+              ✧ 我记得那种害怕
+            </div>
+            <div
+              class="option-btn"
+              data-delta="0"
+              data-feedback="不是害怕。就是不想一个人。"
+            >
+              ✧ 我不怕，但不想她走
+            </div>
+            <div
+              class="option-btn"
+              data-delta="+1"
+              data-feedback="可能是很小很小的事，早就不记得了。"
+            >
+              ✧ 没有印象
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="subtle-hint">🌱 你的选择正在悄悄塑造小时候的画像...</div>
+    </div>
+
+    <!-- 5档完整预览 -->
+    <div class="preview-section">
+      <div class="preview-title">🎨 5档独立配色 · 一段一个颜色</div>
+      <div class="preview-item">
+        <div class="preview-label">
+          <span class="preview-icon">❄️</span>
+          <span class="preview-name">冰封</span>
+          <div class="preview-bar">
+            <div class="preview-segment color-1"></div>
+            <div class="preview-segment"></div>
+            <div class="preview-segment"></div>
+            <div class="preview-segment"></div>
+            <div class="preview-segment"></div>
+          </div>
+        </div>
+        <div class="preview-label">
+          <span class="preview-icon">🌥️</span>
+          <span class="preview-name">微凉</span>
+          <div class="preview-bar">
+            <div class="preview-segment color-1"></div>
+            <div class="preview-segment color-2"></div>
+            <div class="preview-segment"></div>
+            <div class="preview-segment"></div>
+            <div class="preview-segment"></div>
+          </div>
+        </div>
+        <div class="preview-label">
+          <span class="preview-icon">🌱</span>
+          <span class="preview-name">常温</span>
+          <div class="preview-bar">
+            <div class="preview-segment color-1"></div>
+            <div class="preview-segment color-2"></div>
+            <div class="preview-segment color-3"></div>
+            <div class="preview-segment"></div>
+            <div class="preview-segment"></div>
+          </div>
+        </div>
+        <div class="preview-label">
+          <span class="preview-icon">☀️</span>
+          <span class="preview-name">温暖</span>
+          <div class="preview-bar">
+            <div class="preview-segment color-1"></div>
+            <div class="preview-segment color-2"></div>
+            <div class="preview-segment color-3"></div>
+            <div class="preview-segment color-4"></div>
+            <div class="preview-segment"></div>
+          </div>
+        </div>
+        <div class="preview-label">
+          <span class="preview-icon">🔥</span>
+          <span class="preview-name">燃烧</span>
+          <div class="preview-bar">
+            <div class="preview-segment color-1"></div>
+            <div class="preview-segment color-2"></div>
+            <div class="preview-segment color-3"></div>
+            <div class="preview-segment color-4"></div>
+            <div class="preview-segment color-5"></div>
+          </div>
+        </div>
+      </div>
+      <div class="subtle-hint" style="margin-top: 12px">
+        💡 每升一档，颜色都会变化，冷暖变化一目了然
+      </div>
+    </div>
+
+    <div id="toastFeedback" class="toast-feedback"></div>
+
+    <script>
+      const levelMap = {
+        1: { icon: "❄️", name: "冰封", feeling: "你不想说话 · 像被冻住了" },
+        2: { icon: "🌥️", name: "微凉", feeling: "心里闷闷的 · 像要下雨还没下" },
+        3: { icon: "🌱", name: "常温", feeling: "今天还好 · 心里软软的" },
+        4: { icon: "☀️", name: "温暖", feeling: "心里软软的 · 好像被抱了一下" },
+        5: { icon: "🔥", name: "燃烧", feeling: "想哭，也想笑 · 被理解了" },
+      };
+
+      let currentLevel = 3;
+
+      function updateTemperatureLevel(level) {
+        const segments = document.querySelectorAll(".segment");
+        const tempIcon = document.getElementById("tempIcon");
+        const stateNameSpan = document.getElementById("stateName");
+        const stateFeelingSpan = document.getElementById("stateFeeling");
+
+        for (let i = 0; i < segments.length; i++) {
+          const segmentIndex = i + 1;
+          if (segmentIndex <= level) {
+            segments[i].classList.remove(
+              "segment-inactive",
+              "segment-color-1",
+              "segment-color-2",
+              "segment-color-3",
+              "segment-color-4",
+              "segment-color-5",
+            );
+            segments[i].classList.add("segment-color-" + segmentIndex);
+          } else {
+            segments[i].classList.remove(
+              "segment-color-1",
+              "segment-color-2",
+              "segment-color-3",
+              "segment-color-4",
+              "segment-color-5",
+            );
+            segments[i].classList.add("segment-inactive");
+          }
+        }
+
+        const data = levelMap[level];
+        if (data) {
+          tempIcon.innerHTML = data.icon;
+          stateNameSpan.innerText = data.name;
+          stateFeelingSpan.innerText = data.feeling;
+        }
+      }
+
+      function showToast(message, delta) {
+        const toast = document.getElementById("toastFeedback");
+        toast.innerHTML = "✨ " + message;
+        toast.classList.remove("warm", "cool", "neutral");
+        if (delta > 0) {
+          toast.classList.add("warm");
+        } else if (delta < 0) {
+          toast.classList.add("cool");
+        } else {
+          toast.classList.add("neutral");
+        }
+        toast.classList.add("show");
+        setTimeout(function () {
+          toast.classList.remove("show");
+        }, 1800);
+      }
+
+      function setupCard(optionsId) {
+        const options = document.querySelectorAll(
+          "#" + optionsId + " .option-btn",
+        );
+        options.forEach(function (opt) {
+          opt.addEventListener("click", function (e) {
+            e.stopPropagation();
+            const delta = parseInt(opt.getAttribute("data-delta"));
+            const feedbackText = opt.getAttribute("data-feedback");
+
+            let newLevel = currentLevel + delta;
+            if (newLevel < 1) newLevel = 1;
+            if (newLevel > 5) newLevel = 5;
+
+            if (newLevel !== currentLevel) {
+              currentLevel = newLevel;
+              updateTemperatureLevel(currentLevel);
+            }
+
+            if (feedbackText) {
+              showToast(feedbackText, delta);
+            }
+          });
+        });
+      }
+
+      setupCard("optionsArea1");
+      setupCard("optionsArea2");
+      updateTemperatureLevel(3);
+    </script>
+  </body>
+</html>

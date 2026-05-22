@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no"
+    />
+    <title>童年的碎片</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="page-content">
+      <!-- ========== 场景1：引导页 ========== -->
+      <div class="scene active" id="sceneOnboarding">
+        <div class="onboarding-card">
+          <div class="onboarding-emoji">🍃</div>
+          <div class="onboarding-title">欢迎来到童年碎片</div>
+          <div class="onboarding-text">
+            你会看到一些模糊的记忆碎片。<br />
+            选择你记得的、或愿意相信的就好。
+          </div>
+          <div class="onboarding-note">🌱 没有对错 🌱</div>
+          <div class="onboarding-text">结束后，你会看到小时候的画像。</div>
+          <button class="btn-start" id="startBtn">开始拾忆</button>
+        </div>
+      </div>
+
+      <!-- ========== 场景2：碎片拾忆 ========== -->
+      <div class="scene" id="sceneGame">
+        <div id="gameContent"></div>
+      </div>
+
+      <!-- ========== 场景4：结局 ========== -->
+      <div class="scene" id="sceneEnding">
+        <div id="endingContent"></div>
+      </div>
+    </div>
+
+    <!-- 里程碑弹窗（fixed定位） -->
+    <div id="milestoneOverlay" class="milestone-overlay milestone-fixed">
+      <div class="milestone-card">
+        <div class="milestone-icon" id="milestoneIcon">🌱</div>
+        <div class="milestone-title" id="milestoneTitle">第三片记忆</div>
+        <div class="milestone-quote" id="milestoneQuote">
+          "你开始看见小时候的轮廓了"
+        </div>
+        <div class="milestone-progress" id="milestoneProgress">
+          <!-- 进度点由 JS 根据 MILESTONES_CONFIG.triggers 动态生成 -->
+        </div>
+        <div class="milestone-tap-hint">轻触任意位置继续</div>
+      </div>
+    </div>
+
+    <!-- 轻弹窗反馈容器 -->
+    <div id="toastFeedback" class="toast-feedback"></div>
+
+    <!-- ==================== 脚本加载（按依赖顺序） ==================== -->
+    <!-- 1. 数据层 -->
+    <script src="data/thermometer.js"></script>
+    <script src="data/dimensions.js"></script>
+    <script src="data/milestones.js"></script>
+    <script src="data/portraits.js"></script>
+    <script src="data/letters.js"></script>
+    <script src="data/fragments.js"></script>
+
+    <!-- 2. 工具 & 核心逻辑 -->
+    <script src="js/utils.js"></script>
+    <script src="js/state.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/scoring.js"></script>
+    <script src="js/portrait.js"></script>
+    <script src="js/letter.js"></script>
+
+    <!-- 3. UI 组件 -->
+    <script src="js/ui/thermometer.js"></script>
+    <script src="js/ui/fragment.js"></script>
+    <script src="js/ui/toast.js"></script>
+    <script src="js/ui/milestone.js"></script>
+    <script src="js/ui/portraitCard.js"></script>
+    <script src="js/ui/envelope.js"></script>
+
+    <!-- 4. 应用入口 -->
+    <script src="js/app.js"></script>
+  </body>
+</html>

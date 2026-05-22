@@ -1,0 +1,513 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no"
+    />
+    <title>童年的碎片 · 主界面 + 里程碑弹窗（暖阳橙橘主题）</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background: #e8e0d4;
+        font-family:
+          system-ui,
+          -apple-system,
+          "Segoe UI",
+          "PingFang SC",
+          Roboto,
+          sans-serif;
+        padding: 40px 20px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        min-height: 100vh;
+      }
+
+      /* 页面内容容器 */
+      .page-content {
+        max-width: 380px;
+        width: 100%;
+        background: #fffbf5;
+        border-radius: 44px;
+        padding: 16px 16px 24px;
+        box-shadow:
+          0 25px 35px -12px rgba(165, 110, 58, 0.12),
+          0 0 0 6px #f0e8dc,
+          0 0 0 10px #d6c9b5;
+        position: relative;
+      }
+
+      /* ========= 温度计组件 ========= */
+      .temp-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        margin: 0;
+        padding: 0;
+      }
+      .temp-icon {
+        font-size: 34px;
+        flex-shrink: 0;
+        background: #fff0e0;
+        width: 52px;
+        height: 52px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 52px;
+      }
+      .temp-right {
+        flex: 1;
+        max-width: 220px;
+      }
+      .bar-wrapper {
+        margin-bottom: 8px;
+      }
+      .bar-bg {
+        background: #f0e0ce;
+        border-radius: 20px;
+        height: 8px;
+        width: 100%;
+        overflow: hidden;
+      }
+      .bar-fill {
+        background: #e8b06e;
+        border-radius: 20px;
+        height: 100%;
+        width: 56%;
+        transition: width 0.3s ease;
+      }
+      .temp-desc-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        font-size: 12px;
+        line-height: 1.4;
+      }
+      .temp-state-name {
+        font-weight: 700;
+        color: #9b6a3a;
+      }
+      .temp-feeling {
+        color: #c99e6e;
+      }
+
+      /* ========= 碎片卡片 ========= */
+      .fragment-card {
+        background: #ffffff;
+        border-radius: 32px;
+        margin-bottom: 20px;
+        overflow: hidden;
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.04);
+        border: 1px solid #f0d0a8;
+      }
+      .letter-header {
+        background: #fff8f0;
+        padding: 16px 18px 10px;
+      }
+      .fragment-title {
+        font-size: 20px;
+        font-weight: 600;
+        color: #a56e3a;
+        font-family: Georgia, serif;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .letter-body {
+        padding: 18px 18px 22px;
+        background: #ffffff;
+      }
+      .fragment-content {
+        font-size: 15px;
+        line-height: 1.65;
+        color: #6e543a;
+        font-family: Georgia, serif;
+        font-style: italic;
+        text-decoration: underline;
+        text-decoration-color: #f0cda0;
+        text-underline-offset: 6px;
+        background: #fffdf9;
+        padding: 14px 16px;
+        border-radius: 24px;
+        margin-bottom: 20px;
+      }
+
+      /* 选项按钮 */
+      .options-area {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .option-btn {
+        background: #fff2e4;
+        border: none;
+        border-radius: 60px;
+        padding: 12px 18px;
+        font-size: 14px;
+        font-weight: 500;
+        color: #a56e3a;
+        cursor: pointer;
+        transition: 0.1s;
+        text-align: left;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      }
+      .option-btn:active {
+        background: #fce6d0;
+        transform: scale(0.98);
+      }
+
+      /* 轻弹窗反馈 */
+      .toast-feedback {
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%) translateY(20px);
+        padding: 10px 20px;
+        border-radius: 60px;
+        font-size: 13px;
+        font-weight: 500;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        z-index: 1000;
+        opacity: 0;
+        transition: opacity 0.2s, transform 0.2s;
+        pointer-events: none;
+        text-align: center;
+        max-width: 280px;
+        line-height: 1.4;
+      }
+      .toast-feedback.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+
+      /* ========= 里程碑弹窗（覆盖层，position:fixed 适配无phone-mock结构） ========= */
+      .milestone-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(3px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 200;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.2s ease, visibility 0s 0.2s;
+      }
+      .milestone-overlay.show {
+        opacity: 1;
+        visibility: visible;
+        transition: opacity 0.2s ease, visibility 0s 0s;
+      }
+      .milestone-card {
+        background: #fffdf5;
+        border-radius: 48px;
+        padding: 28px 24px;
+        text-align: center;
+        width: 260px;
+        box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.2);
+        transform: scale(0.9);
+        transition: transform 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        border: 1px solid #f0d0a8;
+      }
+      .milestone-overlay.show .milestone-card {
+        transform: scale(1);
+      }
+      .milestone-icon {
+        font-size: 52px;
+        margin-bottom: 12px;
+      }
+      .milestone-title {
+        font-size: 22px;
+        font-weight: 700;
+        color: #a56e3a;
+        margin-bottom: 12px;
+        font-family: Georgia, serif;
+      }
+      .milestone-quote {
+        font-size: 14px;
+        color: #c99e6e;
+        line-height: 1.5;
+        margin-bottom: 20px;
+        font-style: italic;
+      }
+      .milestone-progress {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        margin-bottom: 16px;
+      }
+      .progress-dot {
+        width: 8px;
+        height: 8px;
+        background: #f0d0a8;
+        border-radius: 8px;
+        transition: all 0.2s;
+      }
+      .progress-dot.active {
+        background: #e8b06e;
+        width: 20px;
+      }
+      .milestone-tap-hint {
+        font-size: 10px;
+        color: #d1ae86;
+        margin-top: 8px;
+      }
+
+      /* 底部轻提示 */
+      .subtle-hint {
+        text-align: center;
+        font-size: 11px;
+        color: #d1ae86;
+        margin-top: 16px;
+        padding-top: 8px;
+        border-top: 0.5px dashed #f0e0cc;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-content">
+      <!-- 温度计组件 -->
+      <div class="temp-container">
+        <div class="temp-icon">🌱</div>
+        <div class="temp-right">
+          <div class="bar-wrapper">
+            <div class="bar-bg">
+              <div class="bar-fill" style="width: 56%"></div>
+            </div>
+          </div>
+          <div class="temp-desc-row">
+            <span class="temp-state-name">常温</span>
+            <span class="temp-feeling">今天还好 · 心里软软的</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 碎片卡片 1 -->
+      <div class="fragment-card">
+        <div class="letter-header">
+          <div class="fragment-title"><span>📜</span> 外婆的手</div>
+        </div>
+        <div class="letter-body">
+          <div class="fragment-content">
+            外婆的手很粗。<br />
+            指节大大的。<br />
+            她牵我的时候，会轻轻捏一下。<br />
+            没有原因。<br />
+            就是捏着。
+          </div>
+          <div class="options-area">
+            <div class="option-btn" data-feedback="长大了以后，再也没有人那样捏我的手。">
+              ✧ 我记得那种触感
+            </div>
+            <div class="option-btn" data-feedback="有些事，身体比大脑记得更清楚。">
+              ✧ 不记得了，但觉得安心
+            </div>
+            <div class="option-btn" data-feedback="可能不是手冷。是我后来编出来的。">
+              ✧ 我只记得她的手很冷
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 碎片卡片 2 -->
+      <div class="fragment-card">
+        <div class="letter-header">
+          <div class="fragment-title"><span>🍂</span> 妈妈出门</div>
+        </div>
+        <div class="letter-body">
+          <div class="fragment-content">
+            她穿外套。<br />
+            拿包。<br />
+            钥匙响。<br />
+            我开始哭。<br />
+            她说"一下下就回来"。
+          </div>
+          <div class="options-area">
+            <div class="option-btn" data-feedback="那扇门关上的声音，很久以后还会梦到。">
+              ✧ 我记得那种害怕
+            </div>
+            <div class="option-btn" data-feedback="不是害怕。就是不想一个人。">
+              ✧ 我不怕，但不想她走
+            </div>
+            <div class="option-btn" data-feedback="可能是很小很小的事，早就不记得了。">
+              ✧ 没有印象
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="subtle-hint">🌱 你的选择正在悄悄塑造小时候的画像...</div>
+    </div>
+
+    <!-- 里程碑弹窗容器（初始隐藏） -->
+    <div id="milestoneOverlay" class="milestone-overlay">
+      <div class="milestone-card">
+        <div class="milestone-icon" id="milestoneIcon">🌱</div>
+        <div class="milestone-title" id="milestoneTitle">第三片记忆</div>
+        <div class="milestone-quote" id="milestoneQuote">
+          "你开始看见小时候的轮廓了"
+        </div>
+        <div class="milestone-progress" id="milestoneProgress">
+          <span class="progress-dot active"></span>
+          <span class="progress-dot"></span>
+          <span class="progress-dot"></span>
+        </div>
+        <div class="milestone-tap-hint">轻触任意位置继续</div>
+      </div>
+    </div>
+
+    <!-- 轻弹窗容器 -->
+    <div id="toastFeedback" class="toast-feedback"></div>
+
+    <script>
+      var milestones = {
+        3: {
+          icon: "🌱",
+          title: "第三片记忆",
+          quote: "你开始看见小时候的轮廓了",
+          progressTotal: 3,
+          progressCompleted: 1,
+        },
+        6: {
+          icon: "🌼",
+          title: "第六片记忆",
+          quote: "你越来越靠近那个小孩了",
+          progressTotal: 6,
+          progressCompleted: 2,
+        },
+        9: {
+          icon: "🌾",
+          title: "第九片记忆",
+          quote: "就差最后一片了。你突然不那么着急了。",
+          progressTotal: 9,
+          progressCompleted: 3,
+        },
+      };
+
+      var currentMilestoneKey = 3;
+
+      function showMilestone(level) {
+        var data = milestones[level];
+        if (!data) return;
+
+        document.getElementById("milestoneIcon").innerText = data.icon;
+        document.getElementById("milestoneTitle").innerText = data.title;
+        document.getElementById("milestoneQuote").innerText = "\u201C" + data.quote + "\u201C";
+
+        var progressContainer = document.getElementById("milestoneProgress");
+        progressContainer.innerHTML = "";
+        for (var i = 0; i < data.progressTotal; i++) {
+          var dot = document.createElement("span");
+          dot.className = "progress-dot";
+          if (i < data.progressCompleted) {
+            dot.classList.add("active");
+          }
+          progressContainer.appendChild(dot);
+        }
+
+        var overlay = document.getElementById("milestoneOverlay");
+        overlay.classList.add("show");
+
+        var closeHandler = function () {
+          overlay.classList.remove("show");
+          overlay.removeEventListener("click", closeHandler);
+        };
+        overlay.addEventListener("click", closeHandler);
+
+        setTimeout(function () {
+          if (overlay.classList.contains("show")) {
+            overlay.classList.remove("show");
+          }
+        }, 2800);
+      }
+
+      var fragmentCompletedCount = 0;
+
+      function showToast(message) {
+        var toast = document.getElementById("toastFeedback");
+        toast.innerHTML = "✨ " + message;
+        toast.classList.add("show");
+        setTimeout(function () {
+          toast.classList.remove("show");
+        }, 1800);
+      }
+
+      function updateTemperature(optionText) {
+        var tempFill = document.querySelector(".bar-fill");
+        var tempStateSpan = document.querySelector(".temp-state-name");
+        var tempFeelingSpan = document.querySelector(".temp-feeling");
+        var tempIcon = document.querySelector(".temp-icon");
+
+        if (
+          optionText.indexOf("触感") > -1 ||
+          optionText.indexOf("安心") > -1 ||
+          optionText.indexOf("不怕") > -1
+        ) {
+          tempFill.style.width = "78%";
+          tempIcon.innerHTML = "☀️";
+          tempStateSpan.innerText = "温暖";
+          tempFeelingSpan.innerText = "心里软软的 · 好像被抱了一下";
+        } else if (
+          optionText.indexOf("手冷") > -1 ||
+          optionText.indexOf("害怕") > -1 ||
+          optionText.indexOf("印象") > -1
+        ) {
+          tempFill.style.width = "32%";
+          tempIcon.innerHTML = "🌥️";
+          tempStateSpan.innerText = "微凉";
+          tempFeelingSpan.innerText = "心里闷闷的 · 像要下雨还没下";
+        } else {
+          tempFill.style.width = "56%";
+          tempIcon.innerHTML = "🌱";
+          tempStateSpan.innerText = "常温";
+          tempFeelingSpan.innerText = "今天还好 · 心里软软的";
+        }
+      }
+
+      var allOptions = document.querySelectorAll(".option-btn");
+      for (var i = 0; i < allOptions.length; i++) {
+        (function (btn) {
+          btn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            var feedbackText = btn.getAttribute("data-feedback");
+            if (feedbackText) {
+              showToast(feedbackText);
+              updateTemperature(btn.innerText);
+              fragmentCompletedCount++;
+
+              if (fragmentCompletedCount === 3 && currentMilestoneKey !== 6) {
+                showMilestone(3);
+                currentMilestoneKey = 3;
+              } else if (fragmentCompletedCount === 6) {
+                showMilestone(6);
+                currentMilestoneKey = 6;
+              } else if (fragmentCompletedCount === 9) {
+                showMilestone(9);
+                currentMilestoneKey = 9;
+              }
+            }
+          });
+        })(allOptions[i]);
+      }
+
+      setTimeout(function () {
+        if (fragmentCompletedCount === 0) {
+          showMilestone(3);
+        }
+      }, 500);
+    </script>
+  </body>
+</html>

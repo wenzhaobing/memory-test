@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no"
+    />
+    <title>童年的碎片 · 结局 · 画像与信（信封样式）</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background: #e8e0d4;
+        font-family:
+          system-ui,
+          -apple-system,
+          "Segoe UI",
+          "PingFang SC",
+          Roboto,
+          sans-serif;
+        padding: 40px 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        min-height: 100vh;
+      }
+
+      /* 页面内容容器 */
+      .page-content {
+        max-width: 380px;
+        width: 100%;
+        background: #fffbf5;
+        border-radius: 44px;
+        padding: 16px 16px 24px;
+        box-shadow:
+          0 25px 35px -12px rgba(165, 110, 58, 0.12),
+          0 0 0 6px #f0e8dc,
+          0 0 0 10px #d6c9b5;
+      }
+
+      /* ========== 画像卡片（新结构） ========== */
+      .portrait-card {
+        background: #FFFFFF;
+        border-radius: 32px;
+        margin-bottom: 20px;
+        overflow: hidden;
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.04);
+        border: 1px solid #F0D0A8;
+      }
+      .portrait-header {
+        background: #FFF8F0;
+        padding: 18px;
+        text-align: center;
+        border-bottom: 1px dashed #F0E0CC;
+      }
+      .portrait-icon {
+        font-size: 48px;
+      }
+      .portrait-name {
+        font-size: 22px;
+        font-weight: 700;
+        color: #A56E3A;
+        font-family: Georgia, serif;
+        margin-top: 6px;
+      }
+      .portrait-tagline {
+        font-size: 12px;
+        color: #C99E6E;
+        font-style: italic;
+        margin-top: 4px;
+      }
+
+      /* 维度区域 */
+      .dimensions-section {
+        padding: 16px;
+      }
+      .dimension-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 12px;
+      }
+      .dimension-icon {
+        font-size: 16px;
+        width: 28px;
+      }
+      .dimension-label {
+        font-size: 12px;
+        color: #6E543A;
+        width: 52px;
+      }
+      .dimension-bar {
+        flex: 1;
+        background: #F0E0CE;
+        border-radius: 20px;
+        height: 6px;
+        overflow: hidden;
+      }
+      .dimension-fill {
+        height: 100%;
+        border-radius: 20px;
+      }
+      .dimension-value {
+        font-size: 12px;
+        color: #c99e6e;
+        min-width: 32px;
+        text-align: right;
+      }
+      .dimension-fill-1 { background: #e8b06e; }
+      .dimension-fill-2 { background: #d48c6b; }
+      .dimension-fill-3 { background: #9cb0a0; }
+      .dimension-fill-4 { background: #8f9ca8; }
+
+      /* ========= 信封样式（仿真实信封） ========= */
+      .envelope-container {
+        margin-top: 8px;
+      }
+      .envelope {
+        position: relative;
+        background: #fef5e8;
+        border: 1px solid #e8d5bc;
+        border-radius: 12px;
+        padding: 28px 20px 24px;
+        cursor: pointer;
+        transition: all 0.2s;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.04);
+      }
+      .envelope:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+      }
+      .envelope-flap {
+        position: absolute;
+        top: -1px;
+        left: 0;
+        width: 100%;
+        height: 28px;
+        background: #f5e8d4;
+        border-bottom: 1px solid #e8d5bc;
+        border-radius: 12px 12px 0 0;
+      }
+      .envelope-flap::before {
+        content: "";
+        position: absolute;
+        bottom: -14px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 0;
+        border-left: 18px solid transparent;
+        border-right: 18px solid transparent;
+        border-top: 14px solid #f5e8d4;
+      }
+      .envelope-address {
+        text-align: center;
+        margin-top: 8px;
+      }
+      .envelope-small {
+        font-size: 10px;
+        color: #c99e6e;
+        letter-spacing: 2px;
+        margin-bottom: 6px;
+      }
+      .envelope-large {
+        font-size: 20px;
+        font-weight: 600;
+        color: #a56e3a;
+        font-family: Georgia, serif;
+        margin-bottom: 4px;
+      }
+      .envelope-line {
+        width: 80px;
+        height: 1px;
+        background: #e8d5bc;
+        margin: 8px auto 0;
+      }
+      .envelope-stamp {
+        position: absolute;
+        top: 12px;
+        right: 16px;
+        width: 40px;
+        height: 48px;
+        background: #fff;
+        border: 1px dashed #d4c0a8;
+        border-radius: 4px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        transform: rotate(5deg);
+      }
+      .envelope-stamp span {
+        font-size: 8px;
+        color: #c99e6e;
+        margin-top: 2px;
+      }
+
+      /* ========= 信纸内容（点击后显示） ========= */
+      .letter-container {
+        margin-top: 16px;
+        display: none;
+      }
+      .letter-container.visible {
+        display: block;
+      }
+      .letter-paper {
+        background-color: #fffdf5;
+        padding: 20px 18px;
+        border-radius: 24px;
+        border: 1px solid #f0e0cc;
+      }
+      .letter-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #a56e3a;
+        font-family: Georgia, serif;
+        text-align: center;
+        margin-bottom: 16px;
+        padding-bottom: 8px;
+        border-bottom: 1px dashed #f0e0cc;
+      }
+      .letter-line {
+        font-size: 14px;
+        line-height: 1.8;
+        color: #4a3b2c;
+        font-family: Georgia, serif;
+        font-style: italic;
+        white-space: pre-line;
+      }
+      .letter-signature {
+        text-align: right;
+        font-size: 14px;
+        color: #4a3b2c;
+        font-family: Georgia, serif;
+        font-style: italic;
+        margin-top: 16px;
+      }
+
+      /* 按钮区域 */
+      .actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 8px;
+      }
+      .btn-share {
+        flex: 1;
+        background: #fff2e4;
+        border: none;
+        border-radius: 60px;
+        padding: 14px 0;
+        font-size: 15px;
+        font-weight: 500;
+        color: #a56e3a;
+        cursor: pointer;
+        transition: 0.1s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      }
+      .btn-reset {
+        flex: 1;
+        background: #f0e0ce;
+        border: none;
+        border-radius: 60px;
+        padding: 14px 0;
+        font-size: 15px;
+        font-weight: 500;
+        color: #8b6946;
+        cursor: pointer;
+        transition: 0.1s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      }
+      .btn-share:active,
+      .btn-reset:active {
+        transform: scale(0.98);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-content">
+      <div class="portrait-card">
+        <div class="portrait-header">
+          <!-- 画像区域 -->
+          <div class="portrait-icon">🔥</div>
+          <div class="portrait-name">热烈的连接者</div>
+          <div class="portrait-tagline">"你小时候就像一团火，敢爱敢痛"</div>
+        </div>
+
+        <!-- 维度区域 -->
+        <div class="dimensions-section">
+          <div class="dimension-row">
+            <span class="dimension-icon">🌡️</span>
+            <span class="dimension-label">温度</span>
+            <div class="dimension-bar">
+              <div class="dimension-fill dimension-fill-1" style="width: 78%"></div>
+            </div>
+            <span class="dimension-value">78%</span>
+          </div>
+          <div class="dimension-row">
+            <span class="dimension-icon">🤝</span>
+            <span class="dimension-label">依恋</span>
+            <div class="dimension-bar">
+              <div class="dimension-fill dimension-fill-2" style="width: 65%"></div>
+            </div>
+            <span class="dimension-value">65%</span>
+          </div>
+          <div class="dimension-row">
+            <span class="dimension-icon">🌱</span>
+            <span class="dimension-label">韧性</span>
+            <div class="dimension-bar">
+              <div class="dimension-fill dimension-fill-3" style="width: 70%"></div>
+            </div>
+            <span class="dimension-value">70%</span>
+          </div>
+          <div class="dimension-row">
+            <span class="dimension-icon">🌫️</span>
+            <span class="dimension-label">清晰度</span>
+            <div class="dimension-bar">
+              <div class="dimension-fill dimension-fill-4" style="width: 62%"></div>
+            </div>
+            <span class="dimension-value">62%</span>
+          </div>
+        </div>
+      </div>
+
+          <!-- 信封区域（仿真实信封） -->
+          <div class="envelope-container" id="envelopeContainer">
+            <div class="envelope" id="envelopeBtn">
+              <div class="envelope-flap"></div>
+              <div class="envelope-stamp">
+                📮
+                <span>POST</span>
+              </div>
+              <div class="envelope-address">
+                <div class="envelope-small">TO · 小时候的我</div>
+                <div class="envelope-large">一封迟到的信</div>
+                <div class="envelope-line"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 信纸内容 -->
+          <div class="letter-container" id="letterContainer">
+            <div class="letter-paper">
+              <div class="letter-title">一封迟到的信</div>
+              <div class="letter-line">
+                亲爱的小时候的我：<br /><br />
+                你害怕过，但没有逃。你哭过，但也没有停止去爱。<br />
+                那些你以为烧掉的东西，其实变成了光。<br />
+                你被爱过，也记得被爱。那些温暖，你一直带在身上。<br />
+                现在的我，带着你走了很远。你没有白疼，也没有白爱。
+              </div>
+              <div class="letter-signature">—— 现在的我</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 操作按钮 -->
+      <div class="actions">
+        <button class="btn-share" id="shareBtn">📤 分享画像</button>
+        <button class="btn-reset" id="resetBtn">🔄 重拾记忆</button>
+      </div>
+    </div>
+
+    <script>
+      var envelopeBtn = document.getElementById("envelopeBtn");
+      var envelopeContainer = document.getElementById("envelopeContainer");
+      var letterContainer = document.getElementById("letterContainer");
+
+      envelopeBtn.addEventListener("click", function () {
+        envelopeContainer.style.display = "none";
+        letterContainer.classList.add("visible");
+      });
+
+      document.getElementById("shareBtn").addEventListener("click", function () {
+        alert(
+          "📤 分享画像\n\n画像已生成，可保存为图片或分享链接。\n（正式版会调用原生分享面板）",
+        );
+      });
+
+      document.getElementById("resetBtn").addEventListener("click", function () {
+        if (confirm("重拾记忆将清空所有进度，重新开始。\n确定要重置吗？")) {
+          localStorage.clear();
+          alert("✨ 已重置，即将重新开始");
+          location.reload();
+        }
+      });
+    </script>
+  </body>
+</html>

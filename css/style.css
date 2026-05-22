@@ -1,0 +1,818 @@
+/**
+ * 全局样式 - 暖阳橙橘 · 水彩手帐主题
+ * 从4个Demo页面提取的共用CSS，统一维护
+ */
+
+/* ========== Reset & Base ========== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #fffbf5;
+  font-family:
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    "PingFang SC",
+    Roboto,
+    sans-serif;
+  min-height: 100vh;
+}
+
+/* ========== 页面内容容器 ========== */
+.page-content {
+  max-width: 380px;
+  width: 100%;
+  padding: 20px;
+  position: relative;
+}
+
+/* ========== 场景容器 ========== */
+.scene {
+  display: none;
+}
+.scene.active {
+  display: block;
+}
+
+/* ========== 引导卡片 (Scene 1) ========== */
+.onboarding-card {
+  padding: 40px 28px;
+  text-align: center;
+}
+
+.onboarding-emoji {
+  font-size: 64px;
+  margin-bottom: 20px;
+}
+
+.onboarding-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #a56e3a;
+  margin-bottom: 16px;
+  font-family: Georgia, serif;
+}
+
+.onboarding-text {
+  font-size: 15px;
+  line-height: 1.65;
+  color: #9b8a74;
+  margin-bottom: 20px;
+}
+
+.onboarding-note {
+  font-size: 14px;
+  color: #d48c6b;
+  margin: 16px 0;
+  font-style: italic;
+}
+
+/* ========== 温度计组件 ========== */
+.temp-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 14px;
+  margin: 0 0 20px 0;
+  padding: 0;
+}
+
+.temp-icon {
+  font-size: 34px;
+  flex-shrink: 0;
+  background: #fff0e0;
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 52px;
+  transition: all 0.2s ease;
+}
+
+.temp-right {
+  flex: 1;
+}
+
+.bar-wrapper {
+  margin-bottom: 8px;
+}
+
+.bar-segments {
+  display: flex;
+  gap: 4px;
+  width: 100%;
+}
+
+.segment {
+  flex: 1;
+  height: 8px;
+  border-radius: 20px;
+  transition: background 0.4s ease;
+}
+
+/* 5档独立配色 */
+.segment-color-1 {
+  background: #8f9ca8;
+}
+.segment-color-2 {
+  background: #9cb0a0;
+}
+.segment-color-3 {
+  background: #e8b06e;
+}
+.segment-color-4 {
+  background: #d48c6b;
+}
+.segment-color-5 {
+  background: #c46a4a;
+}
+.segment-inactive {
+  background: #e8ddd0;
+}
+
+.temp-desc-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.temp-state-name {
+  font-weight: 700;
+  color: #9b6a3a;
+}
+
+.temp-feeling {
+  color: #c99e6e;
+}
+
+/* ========== 碎片卡片 ========== */
+.fragment-card {
+  background: #ffffff;
+  border-radius: 32px;
+  margin-bottom: 12px;
+  overflow: hidden;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.04);
+  border: 1px solid #f0d0a8;
+  animation: cardSlideIn 0.35s ease-out;
+}
+
+@keyframes cardSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.letter-header {
+  background: #fff8f0;
+  padding: 16px 18px 10px;
+}
+
+.fragment-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #a56e3a;
+  font-family: Georgia, serif;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.letter-body {
+  padding: 16px;
+  background: #ffffff;
+}
+
+.fragment-content {
+  font-size: 15px;
+  line-height: 1.65;
+  color: #6e543a;
+  font-family: Georgia, serif;
+  font-style: italic;
+  text-decoration: underline;
+  text-decoration-color: #f0cda0;
+  text-underline-offset: 6px;
+  padding: 14px 16px;
+  border-radius: 24px;
+  margin-bottom: 20px;
+}
+
+/* 碎片进度 */
+.fragment-progress {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.progress-text {
+  font-size: 12px;
+  color: #c99e6e;
+  font-weight: 500;
+}
+
+/* ========== 选项按钮 ========== */
+.options-area {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.option-btn {
+  background: #fff2e4;
+  border: none;
+  border-radius: 60px;
+  padding: 12px 18px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #a56e3a;
+  cursor: pointer;
+  transition: 0.15s ease;
+  text-align: left;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.option-btn:hover {
+  background: #fce6d0;
+}
+
+.option-btn:active {
+  background: #fce6d0;
+  transform: scale(0.98);
+}
+
+.option-btn.option-disabled {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.option-btn.option-selected {
+  background: #fce6d0;
+  border: 1.5px solid #e8b06e;
+}
+
+.option-btn.option-dimmed {
+  opacity: 0.45;
+}
+
+/* ========== 轻弹窗反馈 ========== */
+.toast-feedback {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  padding: 10px 20px;
+  border-radius: 60px;
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  opacity: 0;
+  transition:
+    opacity 0.2s,
+    transform 0.2s;
+  pointer-events: none;
+  text-align: center;
+  max-width: 280px;
+  line-height: 1.4;
+}
+
+.toast-feedback.warm {
+  background: #e8b06e;
+  color: #5e3e28;
+}
+
+.toast-feedback.cool {
+  background: #9cb0a0;
+  color: #3a4a3a;
+}
+
+.toast-feedback.neutral {
+  background: #f0e0ce;
+  color: #8b6946;
+}
+
+.toast-feedback.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ========== 里程碑弹窗 ========== */
+.milestone-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  border-radius: 44px;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.25s ease,
+    visibility 0s 0.25s;
+}
+
+.milestone-overlay.milestone-fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+}
+
+.milestone-overlay.show {
+  opacity: 1;
+  visibility: visible;
+  transition:
+    opacity 0.25s ease,
+    visibility 0s 0s;
+}
+
+.milestone-card {
+  background: #fffdf5;
+  border-radius: 48px;
+  padding: 28px 24px;
+  text-align: center;
+  width: 260px;
+  box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.2);
+  transform: scale(0.9);
+  transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+  border: 1px solid #f0d0a8;
+}
+
+.milestone-overlay.show .milestone-card {
+  transform: scale(1);
+}
+
+.milestone-icon {
+  font-size: 52px;
+  margin-bottom: 12px;
+}
+
+.milestone-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #a56e3a;
+  margin-bottom: 12px;
+  font-family: Georgia, serif;
+}
+
+.milestone-quote {
+  font-size: 14px;
+  color: #c99e6e;
+  line-height: 1.5;
+  margin-bottom: 20px;
+  font-style: italic;
+}
+
+.milestone-progress {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.progress-dot {
+  width: 8px;
+  height: 8px;
+  background: #f0d0a8;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.progress-dot.active {
+  background: #e8b06e;
+  width: 20px;
+}
+
+.milestone-tap-hint {
+  font-size: 10px;
+  color: #d1ae86;
+  margin-top: 8px;
+}
+
+/* ========== 画像卡片 (Scene 4) ========== */
+.card {
+  background: #ffffff;
+  border-radius: 32px;
+  margin-bottom: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+}
+
+/* ========== 画像卡片（新结构） ========== */
+.portrait-card {
+  background: #ffffff;
+  border-radius: 32px;
+  margin-bottom: 20px;
+  overflow: hidden;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.04);
+  border: 1px solid #f0d0a8;
+}
+
+.portrait-header {
+  background: #fff8f0;
+  padding: 18px;
+  text-align: center;
+  border-bottom: 1px dashed #f0e0cc;
+}
+
+.portrait-icon {
+  font-size: 48px;
+}
+
+.portrait-name {
+  font-size: 22px;
+  font-weight: 700;
+  color: #a56e3a;
+  font-family: Georgia, serif;
+  margin-top: 6px;
+}
+
+.portrait-tagline {
+  font-size: 12px;
+  color: #c99e6e;
+  font-style: italic;
+  margin-top: 4px;
+}
+
+/* 维度区域 */
+.dimensions-section {
+  padding: 16px;
+}
+
+.dimension-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.dimension-icon {
+  font-size: 16px;
+  width: 28px;
+}
+
+.dimension-label {
+  font-size: 12px;
+  color: #6e543a;
+  width: 52px;
+}
+
+.dimension-bar {
+  flex: 1;
+  background: #f0e0ce;
+  border-radius: 20px;
+  height: 6px;
+  overflow: hidden;
+}
+
+.dimension-fill {
+  height: 100%;
+  border-radius: 20px;
+  width: 0;
+  transition: width 0.8s cubic-bezier(0.25, 0.8, 0.25, 1.2);
+}
+
+.dimension-fill.animate-in {
+  /* width 由 JS 动态设置 */
+}
+
+.dimension-value {
+  font-size: 12px;
+  color: #c99e6e;
+  min-width: 32px;
+  text-align: right;
+}
+
+/* 维度填充色 */
+.dimension-fill-1 {
+  background: #e8b06e;
+}
+.dimension-fill-2 {
+  background: #d48c6b;
+}
+.dimension-fill-3 {
+  background: #9cb0a0;
+}
+.dimension-fill-4 {
+  background: #8f9ca8;
+}
+
+/* ========== 庆祝粒子 ========== */
+.celebration-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 300;
+  overflow: hidden;
+  border-radius: 44px;
+}
+
+.celebration-particle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  animation: particleFloat 2.5s ease-out forwards;
+  opacity: 0;
+}
+
+@keyframes particleFloat {
+  0% {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg) scale(1);
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-320px) rotate(720deg) scale(0.3);
+  }
+}
+
+/* ========== 信封样式 ========== */
+.envelope-container {
+  margin-top: 8px;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+}
+
+.envelope {
+  position: relative;
+  background: #fef5e8;
+  border: 1px solid #e8d5bc;
+  border-radius: 12px;
+  padding: 28px 20px 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.04);
+}
+
+.envelope:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+}
+
+.envelope-flap {
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: 100%;
+  height: 28px;
+  background: #f5e8d4;
+  border-bottom: 1px solid #e8d5bc;
+  border-radius: 12px 12px 0 0;
+}
+
+.envelope-flap::before {
+  content: "";
+  position: absolute;
+  bottom: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 18px solid transparent;
+  border-right: 18px solid transparent;
+  border-top: 14px solid #f5e8d4;
+}
+
+.envelope-address {
+  text-align: center;
+  margin-top: 24px;
+}
+
+.envelope-small {
+  font-size: 10px;
+  color: #c99e6e;
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+}
+
+.envelope-large {
+  font-size: 20px;
+  font-weight: 600;
+  color: #a56e3a;
+  font-family: Georgia, serif;
+  margin-bottom: 4px;
+}
+
+.envelope-line {
+  width: 80px;
+  height: 1px;
+  background: #e8d5bc;
+  margin: 8px auto 0;
+}
+
+.envelope-stamp {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  width: 40px;
+  height: 48px;
+  background: #fff;
+  border: 1px dashed #d4c0a8;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  transform: rotate(5deg);
+}
+
+.envelope-stamp span {
+  font-size: 8px;
+  color: #c99e6e;
+  margin-top: 2px;
+}
+
+/* ========== 信纸样式 ========== */
+.letter-container {
+  margin-top: 16px;
+  display: none;
+  animation: letterReveal 0.4s ease-out;
+}
+
+.letter-container.visible {
+  display: block;
+}
+
+@keyframes letterReveal {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.letter-paper {
+  padding: 20px 18px;
+  background: #fdf7ec;
+  border: 1px solid #e8dcc8;
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(220, 200, 170, 0.1) 0px,
+    rgba(220, 200, 170, 0.1) 2px,
+    transparent 2px,
+    transparent 8px
+  );
+  color: #5c4a32;
+  border-radius: 12px;
+}
+
+.letter-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #a56e3a;
+  font-family: Georgia, serif;
+  text-align: center;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed #d8ccb0;
+}
+
+.letter-line {
+  font-size: 14px;
+  line-height: 1.8;
+  color: #4a3b2c;
+  font-family: Georgia, serif;
+  font-style: italic;
+  white-space: pre-line;
+}
+
+.letter-signature {
+  text-align: right;
+  font-size: 14px;
+  color: #4a3b2c;
+  font-family: Georgia, serif;
+  font-style: italic;
+  margin-top: 16px;
+}
+
+/* ========== 按钮 ========== */
+.btn-start {
+  background: #fff2e4;
+  border: none;
+  border-radius: 60px;
+  padding: 14px 24px;
+  font-size: 17px;
+  font-weight: 500;
+  color: #a56e3a;
+  cursor: pointer;
+  width: 100%;
+  transition: 0.15s ease;
+  margin-top: 32px;
+}
+
+.btn-start:hover {
+  background: #fce6d0;
+}
+
+.btn-start:active {
+  background: #fce6d0;
+  transform: scale(0.98);
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.btn-share {
+  flex: 1;
+  background: #fff2e4;
+  border: none;
+  border-radius: 60px;
+  padding: 14px 0;
+  font-size: 15px;
+  font-weight: 500;
+  color: #a56e3a;
+  cursor: pointer;
+  transition: 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.btn-reset {
+  flex: 1;
+  background: #f0e0ce;
+  border: none;
+  border-radius: 60px;
+  padding: 14px 0;
+  font-size: 15px;
+  font-weight: 500;
+  color: #8b6946;
+  cursor: pointer;
+  transition: 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.btn-share:hover,
+.btn-reset:hover {
+  opacity: 0.9;
+}
+
+.btn-share:active,
+.btn-reset:active {
+  transform: scale(0.98);
+}
+
+/* ========== 底部提示 ========== */
+.subtle-hint {
+  text-align: center;
+  font-size: 11px;
+  color: #d1ae86;
+  margin-top: 16px;
+  padding-top: 8px;
+  border-top: 0.5px dashed #f0e0cc;
+}
+
+/* ========== 场景过渡 ========== */
+.scene-transition {
+  animation: sceneFadeIn 0.35s ease-out;
+}
+
+@keyframes sceneFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

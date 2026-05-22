@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no"
+    />
+    <title>童年的碎片 · 场景1 · 首次引导</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background: #e8e0d4;
+        font-family:
+          system-ui,
+          -apple-system,
+          "Segoe UI",
+          "PingFang SC",
+          Roboto,
+          sans-serif;
+        padding: 40px 20px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        min-height: 100vh;
+      }
+
+      .page-content {
+        max-width: 380px;
+        width: 100%;
+        background: #fffbf5;
+        border-radius: 44px;
+        padding: 20px 16px 32px;
+      }
+
+      /* 引导卡片 */
+      .onboarding-card {
+        background: #ffffff;
+        border-radius: 48px;
+        padding: 40px 28px;
+        text-align: center;
+        margin-top: 30px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+        border: 1px solid #f0d0a8;
+      }
+
+      .onboarding-emoji {
+        font-size: 64px;
+        margin-bottom: 20px;
+      }
+
+      .onboarding-title {
+        font-size: 24px;
+        font-weight: 600;
+        color: #a56e3a;
+        margin-bottom: 16px;
+        font-family: Georgia, serif;
+      }
+
+      .onboarding-text {
+        font-size: 15px;
+        line-height: 1.65;
+        color: #9b8a74;
+        margin-bottom: 20px;
+      }
+
+      .onboarding-note {
+        font-size: 14px;
+        color: #d48c6b;
+        margin: 16px 0;
+        font-style: italic;
+      }
+
+      .btn-start {
+        background: #fff2e4;
+        border: none;
+        border-radius: 60px;
+        padding: 14px 24px;
+        font-size: 17px;
+        font-weight: 500;
+        color: #a56e3a;
+        cursor: pointer;
+        width: 100%;
+        transition: 0.1s;
+        margin-top: 8px;
+      }
+      .btn-start:active {
+        background: #fce6d0;
+        transform: scale(0.98);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-content">
+      <!-- 引导卡片：无localStorage提示 -->
+      <div class="onboarding-card">
+        <div class="onboarding-emoji">🍃</div>
+        <div class="onboarding-title">欢迎来到童年碎片</div>
+        <div class="onboarding-text">
+          你会看到一些模糊的记忆碎片。<br />
+          选择你记得的、或愿意相信的就好。
+        </div>
+        <div class="onboarding-note">🌱 没有对错 🌱</div>
+        <div class="onboarding-text">结束后，你会看到小时候的画像。</div>
+        <button class="btn-start" id="startBtn">开始拾忆</button>
+      </div>
+    </div>
+
+    <script>
+      document
+        .getElementById("startBtn")
+        ?.addEventListener("click", function () {
+          console.log("开始拾忆 → 跳转至场景2（碎片主界面）");
+          alert(
+            "演示模式：点击后将进入场景2（碎片拾忆界面）\n实际开发中此处跳转至主流程。",
+          );
+        });
+    </script>
+  </body>
+</html>
