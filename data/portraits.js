@@ -13,8 +13,8 @@ var PORTRAITS_CONFIG = [
     /** 匹配条件：所有条件必须同时满足 */
     conditions: {
       temperatureMin: 4,
-      attachmentMin: 60,
-      resilienceMin: 60
+      attachmentMin: 50,
+      resilienceMin: 50
     }
   },
   {
@@ -25,8 +25,8 @@ var PORTRAITS_CONFIG = [
     priority: 2,
     conditions: {
       temperatureMin: 3,
-      attachmentMin: 50,
-      resilienceMin: 50
+      attachmentMin: 40,
+      resilienceMin: 40
     }
   },
   {
@@ -37,8 +37,8 @@ var PORTRAITS_CONFIG = [
     priority: 3,
     conditions: {
       temperatureMin: 3,
-      attachmentMin: 40,
-      resilienceMin: 40,
+      attachmentMin: 35,
+      resilienceMin: 35,
       clarityMax: 50
     }
   },
@@ -50,8 +50,8 @@ var PORTRAITS_CONFIG = [
     priority: 4,
     conditions: {
       temperatureMax: 2,
-      attachmentMax: 40,
-      resilienceMax: 40
+      attachmentMax: 35,
+      resilienceMax: 35
     }
   },
   {
@@ -61,8 +61,8 @@ var PORTRAITS_CONFIG = [
     tagline: '你很小的时候就学会了不哭',
     priority: 5,
     conditions: {
-      resilienceMin: 60,
-      attachmentMax: 40
+      resilienceMin: 50,
+      attachmentMax: 35
     }
   },
   {

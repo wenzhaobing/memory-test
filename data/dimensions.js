@@ -45,9 +45,9 @@ var DIMENSIONS_CONFIG = {
       avoidant: -1    // 疏离
     },
     /** 百分比转换公式: clamp((rawScore + offset) × multiplier + base, 0, 100) */
-    offset: 6,
-    multiplier: 7,
-    base: 10
+    offset: 4,
+    multiplier: 3.5,
+    base: 25
   },
 
   /** 韧性维度计分参数 */
@@ -58,8 +58,8 @@ var DIMENSIONS_CONFIG = {
       fragile: -0.5   // 脆弱
     },
     offset: 5,
-    multiplier: 8,
-    base: 15
+    multiplier: 3.5,
+    base: 20
   },
 
   /** 清晰度维度计分参数 */
@@ -69,7 +69,7 @@ var DIMENSIONS_CONFIG = {
       vaguely: 0.5,      // 模糊记得
       notRemember: 0     // 不记得
     },
-    multiplier: 7,
-    base: 5
+    multiplier: 4.5,
+    base: 10
   }
 };

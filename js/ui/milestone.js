@@ -1,7 +1,8 @@
 /**
- * 里程碑弹窗 UI 组件
- * 在完成第3、6、9个碎片时触发
- * 居中弹窗 + 进度点 + 自动关闭
+ * 里程碑弹窗 UI 组件 · 邮票式
+ * 在完成第1、3、6、12、20个碎片时触发
+ * 居中邮票弹窗 + 自动关闭
+ * 接口兼容：show(completedCount, onClose)
  */
 var MilestoneUI = (function () {
   'use strict';
@@ -14,7 +15,7 @@ var MilestoneUI = (function () {
 
   /**
    * 显示里程碑弹窗
-   * @param {number} completedCount - 已完成碎片数 (3/6/9)
+   * @param {number} completedCount - 已完成碎片数 (1/3/6/12/20)
    * @param {Function} onClose - 关闭后的回调
    */
   function show(completedCount, onClose) {
@@ -24,31 +25,20 @@ var MilestoneUI = (function () {
 
     _onClose = onClose || null;
 
-    // 更新弹窗内容
-    var iconEl = document.getElementById('milestoneIcon');
-    if (iconEl) iconEl.textContent = data.icon;
+    // 计算当前是第几枚邮票（ordinal position, 1-based）
+    var activeIndex = config.triggers.indexOf(completedCount) + 1;
 
-    var titleEl = document.getElementById('milestoneTitle');
-    if (titleEl) titleEl.textContent = data.title;
-
-    var quoteEl = document.getElementById('milestoneQuote');
-    if (quoteEl) quoteEl.textContent = '“' + data.quote + '”';
-
-    // 生成进度点：总数 = 里程碑总数，active 数 = 当前是第几个里程碑
-    var progressContainer = document.getElementById('milestoneProgress');
-    if (progressContainer) {
-      progressContainer.innerHTML = '';
-      var totalMilestones = config.triggers.length;
-      // 当前里程碑在 triggers 数组中的序号（从1开始）
-      var activeIndex = config.triggers.indexOf(completedCount) + 1;
-      for (var i = 0; i < totalMilestones; i++) {
-        var dot = document.createElement('span');
-        dot.className = 'progress-dot';
-        if (i < activeIndex) {
-          dot.classList.add('active');
-        }
-        progressContainer.appendChild(dot);
-      }
+    // 构建邮票 HTML 模板
+    var stampModal = document.getElementById('stampModal');
+    if (stampModal) {
+      stampModal.innerHTML = ''
+        + '<div class="stamp stamp-' + activeIndex + '">'
+        + '  <div class="stamp-icon">' + data.icon + '</div>'
+        + '  <div class="stamp-theme">' + data.title + '</div>'
+        + '  <div class="stamp-number">—— 第 ' + activeIndex + ' 枚 ——</div>'
+        + '  <div class="stamp-quote">"' + data.quote + '"</div>'
+        + '  <div class="stamp-tap-hint">✨ 轻触任意位置继续</div>'
+        + '</div>';
     }
 
     // 显示弹窗

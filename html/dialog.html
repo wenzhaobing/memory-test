@@ -352,20 +352,16 @@
       <div class="subtle-hint">🌱 你的选择正在悄悄塑造小时候的画像...</div>
     </div>
 
-    <!-- 里程碑弹窗容器（初始隐藏） -->
+    <!-- 里程碑弹窗容器（初始隐藏）—— 邮票式 -->
     <div id="milestoneOverlay" class="milestone-overlay">
-      <div class="milestone-card">
-        <div class="milestone-icon" id="milestoneIcon">🌱</div>
-        <div class="milestone-title" id="milestoneTitle">第三片记忆</div>
-        <div class="milestone-quote" id="milestoneQuote">
-          "你开始看见小时候的轮廓了"
+      <div class="stamp-modal" id="stampModal">
+        <div class="stamp stamp-1">
+          <div class="stamp-icon" id="milestoneIcon">🌱</div>
+          <div class="stamp-theme" id="milestoneTitle">第一片记忆</div>
+          <div class="stamp-number">—— 第 1 枚 ——</div>
+          <div class="stamp-quote" id="milestoneQuote">"你来了。故事开始了。"</div>
+          <div class="stamp-tap-hint">✨ 轻触任意位置继续</div>
         </div>
-        <div class="milestone-progress" id="milestoneProgress">
-          <span class="progress-dot active"></span>
-          <span class="progress-dot"></span>
-          <span class="progress-dot"></span>
-        </div>
-        <div class="milestone-tap-hint">轻触任意位置继续</div>
       </div>
     </div>
 
@@ -374,48 +370,32 @@
 
     <script>
       var milestones = {
-        3: {
-          icon: "🌱",
-          title: "第三片记忆",
-          quote: "你开始看见小时候的轮廓了",
-          progressTotal: 3,
-          progressCompleted: 1,
-        },
-        6: {
-          icon: "🌼",
-          title: "第六片记忆",
-          quote: "你越来越靠近那个小孩了",
-          progressTotal: 6,
-          progressCompleted: 2,
-        },
-        9: {
-          icon: "🌾",
-          title: "第九片记忆",
-          quote: "就差最后一片了。你突然不那么着急了。",
-          progressTotal: 9,
-          progressCompleted: 3,
-        },
+        1: { icon: "🌱", title: "第一片记忆", quote: "你来了。故事开始了。" },
+        3: { icon: "🌼", title: "第三片记忆", quote: "你迈出了第一步" },
+        6: { icon: "🌼", title: "第六片记忆", quote: "你第一次知道分开是什么感觉" },
+        12: { icon: "🌾", title: "第十二片记忆", quote: "你的身体在悄悄长大" },
+        20: { icon: "🌾", title: "第二十片记忆", quote: "你拾起了所有的碎片。它们拼出了你。" }
       };
 
-      var currentMilestoneKey = 3;
+      var milestoneOrder = [1, 3, 6, 12, 20];
+      var currentMilestoneKey = 1;
 
       function showMilestone(level) {
         var data = milestones[level];
         if (!data) return;
 
-        document.getElementById("milestoneIcon").innerText = data.icon;
-        document.getElementById("milestoneTitle").innerText = data.title;
-        document.getElementById("milestoneQuote").innerText = "\u201C" + data.quote + "\u201C";
+        var activeIndex = milestoneOrder.indexOf(level) + 1;
 
-        var progressContainer = document.getElementById("milestoneProgress");
-        progressContainer.innerHTML = "";
-        for (var i = 0; i < data.progressTotal; i++) {
-          var dot = document.createElement("span");
-          dot.className = "progress-dot";
-          if (i < data.progressCompleted) {
-            dot.classList.add("active");
-          }
-          progressContainer.appendChild(dot);
+        var stampModal = document.getElementById("stampModal");
+        if (stampModal) {
+          stampModal.innerHTML = ""
+            + '<div class="stamp stamp-' + activeIndex + '">'
+            + '  <div class="stamp-icon">' + data.icon + '</div>'
+            + '  <div class="stamp-theme">' + data.title + '</div>'
+            + '  <div class="stamp-number">—— 第 ' + activeIndex + ' 枚 ——</div>'
+            + '  <div class="stamp-quote">"' + data.quote + '"</div>'
+            + '  <div class="stamp-tap-hint">✨ 轻触任意位置继续</div>'
+            + '</div>';
         }
 
         var overlay = document.getElementById("milestoneOverlay");
