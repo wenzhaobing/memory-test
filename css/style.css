@@ -345,14 +345,31 @@ body {
     visibility 0s 0s;
 }
 
-/* 邮票弹窗容器 */
+/* 邮票弹窗容器 — 掉落动画 */
 .stamp-modal {
-  transform: scale(0.9);
-  transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+  transform-origin: center;
 }
 
 .milestone-overlay.show .stamp-modal {
-  transform: scale(1);
+  animation: dropFall 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.1) forwards;
+}
+
+@keyframes dropFall {
+  0% {
+    opacity: 0;
+    transform: translateY(-150px) rotate(-15deg) scale(0.7);
+  }
+  40% {
+    opacity: 1;
+    transform: translateY(10px) rotate(2deg) scale(1.02);
+  }
+  70% {
+    transform: translateY(-5px) rotate(-1deg) scale(0.99);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg) scale(1);
+  }
 }
 
 /* 邮票卡片主体 */
